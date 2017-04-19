@@ -120,6 +120,8 @@ public class CareWebShell extends Div implements AfterCompose {
     
     private boolean autoStart;
     
+    private boolean logoutConfirm = true;
+    
     private final IUserContextEvent userContextListener = new IUserContextEvent() {
         
         /**
@@ -181,7 +183,9 @@ public class CareWebShell extends Div implements AfterCompose {
             appendChild(registeredStyles);
             appendChild(messageWindow = new MessageWindow());
             desktop = new UIElementDesktop(this);
-            appFramework.registerObject(userContextListener);
+            if (logoutConfirm) {
+            	appFramework.registerObject(userContextListener);
+            }
             String confirmClose = FrameworkWebSupport.getFrameworkProperty("confirmClose", "CAREWEB.CONFIRM.CLOSE");
             
             if (StringUtils.isEmpty(confirmClose) || BooleanUtils.toBoolean(confirmClose)) {
@@ -338,6 +342,14 @@ public class CareWebShell extends Div implements AfterCompose {
     public void setAutoStart(boolean autoStart) {
         this.autoStart = autoStart;
     }
+
+    /**
+     * Sets the logout confirm flag.
+     * @param logoutConfirm True if logout confirmation is needed on user context change.
+     */
+    public void setLogoutConfirm(boolean logoutConfirm) {
+		this.logoutConfirm = logoutConfirm;
+	}
     
     /**
      * Build the UI based on the specified layout.
